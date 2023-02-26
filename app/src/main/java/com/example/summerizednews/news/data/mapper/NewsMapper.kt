@@ -10,8 +10,7 @@ internal fun NewsListResponse.toNewsList() = response.results.map {
         id = it.id,
         title = it.webTitle,
         writtenAt = it.webPublicationDate,
-        section = it.sectionName,
-        type = it.type
+        section = it.sectionName
     )
 }
 
@@ -20,7 +19,6 @@ internal fun NewsDetailResponse.toNewsDetail() = with(response.content) {
         id = id,
         title = webTitle,
         section = sectionName,
-        type = type,
         writtenAt = webPublicationDate,
         body = fields.body
     )

@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -33,6 +34,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
     }
     kotlinOptions {
         jvmTarget = '1.8'
@@ -87,6 +92,16 @@ dependencies {
     testImplementation "io.mockk:mockk-android:${mockkVersion}"
     testImplementation "io.mockk:mockk-agent:${mockkVersion}"
     // endregion mockK =============================================================================
+
+    // region Shimmer ==============================================================================
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    // endregion Shimmer ===========================================================================
+
+    // region Navigation ===========================================================================
+    String navigationVersion = "2.5.3"
+    implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
+    implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
+    // endregion Navigation ========================================================================
 }
 
 kapt {
