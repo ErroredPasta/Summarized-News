@@ -6,7 +6,7 @@
 
         <variable
             name="uiState"
-            type="com.example.summerizednews.news.presentation.NewsUiState" />
+            type="com.example.summarizednews.news.presentation.NewsUiState" />
 
         <import type="kotlin.jvm.functions.Function0" />
     </data>

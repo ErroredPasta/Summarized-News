@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.summerizednews'
+    namespace 'com.example.summarizednews'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.summerizednews"
+        applicationId "com.example.summarizednews"
         minSdk 21
         targetSdk 33
         versionCode 1

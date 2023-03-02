@@ -7,9 +7,9 @@
 
         <variable
             name="viewModel"
-            type="com.example.summerizednews.news.presentation.NewsListViewModel" />
+            type="com.example.summarizednews.news.presentation.NewsListViewModel" />
 
-        <import type="com.example.summerizednews.news.presentation.NewsListState" />
+        <import type="com.example.summarizednews.news.presentation.NewsListState" />
 
         <import type="android.view.View" />
     </data>
