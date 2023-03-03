@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 interface NewsApi {
 
-    @GET("/search?q=news&api-key=${BuildConfig.NEWS_API_KEY}")
+    @GET("/search?q=news&type=article&order-by=newest&api-key=${BuildConfig.NEWS_API_KEY}")
     suspend fun getNewsList(
         @Query("page") page: Int = 1
     ): NewsListResponse
