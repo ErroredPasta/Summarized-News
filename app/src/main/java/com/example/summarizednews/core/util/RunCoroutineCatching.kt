@@ -1,4 +1,4 @@
-package com.example.summarizednews.news.core.util
+package com.example.summarizednews.core.util
 
 import kotlinx.coroutines.CancellationException
 

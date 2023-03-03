@@ -1,6 +1,6 @@
 package com.example.summarizednews.news.data.repository
 
-import com.example.summarizednews.news.core.di.Dispatcher
+import com.example.summarizednews.core.di.Dispatcher
 import com.example.summarizednews.news.data.api.NewsApi
 import com.example.summarizednews.news.data.mapper.toNewsDetail
 import com.example.summarizednews.news.data.mapper.toNewsList

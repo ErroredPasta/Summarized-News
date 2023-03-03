@@ -1,4 +1,4 @@
-package com.example.summarizednews.news.core.data
+package com.example.summarizednews.core.data
 
 import dagger.Module
 import dagger.Provides

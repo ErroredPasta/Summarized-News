@@ -2,7 +2,7 @@ package com.example.summarizednews.news.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.summarizednews.news.core.util.runCoroutineCatching
+import com.example.summarizednews.core.util.runCoroutineCatching
 import com.example.summarizednews.news.domain.repository.NewsRepository
 import com.example.summarizednews.news.presentation.mapper.toNewsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

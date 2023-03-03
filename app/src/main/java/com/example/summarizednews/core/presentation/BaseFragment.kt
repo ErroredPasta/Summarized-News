@@ -1,4 +1,4 @@
-package com.example.summarizednews.news.core.presentation
+package com.example.summarizednews.core.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater

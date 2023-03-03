@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.summarizednews.R
-import com.example.summarizednews.news.core.presentation.BaseFragment
+import com.example.summarizednews.core.presentation.BaseFragment
 import com.example.summarizednews.databinding.FragmentNewsListBinding
 import dagger.hilt.android.AndroidEntryPoint
 
