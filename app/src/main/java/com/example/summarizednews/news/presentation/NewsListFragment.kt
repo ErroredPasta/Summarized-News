@@ -20,6 +20,8 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding>() {
         savedInstanceState: Bundle?
     ): FragmentNewsListBinding = FragmentNewsListBinding.inflate(inflater, container, false).apply {
         newsListRecyclerView.adapter = adapter
+        viewModel = this@NewsListFragment.viewModel
+        setLifecycleOwner { this@NewsListFragment.viewLifecycleOwner.lifecycle }
     }.also {
         viewModel.state.collectWhenStarted { state ->
             if (state.isLoading) {
