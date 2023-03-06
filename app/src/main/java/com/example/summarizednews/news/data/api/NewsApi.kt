@@ -16,6 +16,6 @@ interface NewsApi {
 
     @GET("/{id}?show-fields=body&api-key=${BuildConfig.NEWS_API_KEY}")
     suspend fun getNewsDetailById(
-        @Path("id") id: String
+        @Path(value = "id", encoded = true) id: String
     ): NewsDetailResponse
 }

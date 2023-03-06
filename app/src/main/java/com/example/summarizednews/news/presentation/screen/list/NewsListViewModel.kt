@@ -31,13 +31,21 @@ class NewsListViewModel @Inject constructor(
                 /* TODO: 2023-02-25 토 23:09, implement paging */
                 repository.getNewsList(page = 1)
             }.onSuccess { results ->
-                val uiStates = results.map {
-                    /* TODO: 2023-02-25 토 23:11, implement navigation */
-                    it.toNewsUiState(onClick = {  })
+                val uiStates = results.map { news ->
+                    news.toNewsUiState(
+                        onClick = {
+                            _state.update { it.copy(navigateTo = news.id) }
+                        }
+                    )
                 }
+
                 _state.update { it.copy(isLoading = false, data = uiStates) }
             }
         }
+    }
+
+    fun navigationDone() {
+        _state.update { it.copy(navigateTo = null) }
     }
 }
 
