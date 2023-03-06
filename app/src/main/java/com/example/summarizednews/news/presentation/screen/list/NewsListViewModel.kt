@@ -40,6 +40,8 @@ class NewsListViewModel @Inject constructor(
                 }
 
                 _state.update { it.copy(isLoading = false, data = uiStates) }
+            }.onFailure { cause ->
+                _state.update { it.copy(isLoading = false, error = cause) }
             }
         }
     }
