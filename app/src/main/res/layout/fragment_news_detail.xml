@@ -63,6 +63,31 @@
                     android:textSize="@dimen/default_text_size"
                     tools:text="2023-02-10T16:37:18Z" />
 
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/default_margin"
+                    android:background="@color/purple_500"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:visibility="@{viewModel.state.summary != null ? View.VISIBLE : View.GONE}">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/summary"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewModel.state.summary}"
+                        android:textColor="@color/white"
+                        tools:text="Summary content" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <TextView
                     android:id="@+id/news_detail_body"
