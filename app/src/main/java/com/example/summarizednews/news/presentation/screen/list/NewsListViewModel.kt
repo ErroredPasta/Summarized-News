@@ -49,6 +49,10 @@ class NewsListViewModel @Inject constructor(
     fun navigationDone() {
         _state.update { it.copy(navigateTo = null) }
     }
+
+    fun errorHandlingDone() {
+        _state.update { it.copy(error = null) }
+    }
 }
 
 data class NewsListState(

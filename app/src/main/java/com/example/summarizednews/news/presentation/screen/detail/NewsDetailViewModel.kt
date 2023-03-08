@@ -53,6 +53,10 @@ class NewsDetailViewModel @Inject constructor(
            _state.update { it.copy(error = cause) }
         }
     }
+
+    fun errorHandlingDone() {
+        _state.update { it.copy(error = null) }
+    }
 }
 
 data class NewsDetailState(

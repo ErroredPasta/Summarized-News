@@ -38,6 +38,7 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding>() {
                 showToast(
                     state.error.message ?: getString(R.string.error_occurred_while_getting_news)
                 )
+                viewModel.errorHandlingDone()
             }
 
             state.navigateTo?.let { newsId ->

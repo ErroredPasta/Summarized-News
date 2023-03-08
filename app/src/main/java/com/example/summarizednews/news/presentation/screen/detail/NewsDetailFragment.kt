@@ -24,6 +24,7 @@ class NewsDetailFragment : BaseFragment<FragmentNewsDetailBinding>() {
         viewModel.state.collectWhenStarted { state ->
             state.error?.let {
                 showToast(it.message ?: getString(R.string.error_occurred_while_getting_news))
+                viewModel.errorHandlingDone()
             }
         }
     }
