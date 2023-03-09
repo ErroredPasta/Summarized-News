@@ -15,9 +15,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 abstract class BaseFragment<Binding : ViewBinding> : Fragment() {
-    private var _binding: Binding? = null
-    protected val binding get() = _binding!!
-
     protected abstract fun inflateBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,13 +26,7 @@ abstract class BaseFragment<Binding : ViewBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = inflateBinding(inflater, container, savedInstanceState)
-        return binding.root
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+        return inflateBinding(inflater, container, savedInstanceState).root
     }
 
     protected fun <T> Flow<T>.collectWhenStarted(action: (T) -> Unit) {

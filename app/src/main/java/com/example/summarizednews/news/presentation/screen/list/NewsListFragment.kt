@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class NewsListFragment : BaseFragment<FragmentNewsListBinding>() {
     private val adapter = NewsListAdapter()
-    private val viewModel by viewModels<NewsListViewModel>()
+    private val newsListViewModel by viewModels<NewsListViewModel>()
     private val navController by lazy { findNavController() }
 
     override fun inflateBinding(
@@ -22,15 +22,18 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding>() {
         savedInstanceState: Bundle?
     ): FragmentNewsListBinding = FragmentNewsListBinding.inflate(inflater, container, false).apply {
         newsListRecyclerView.adapter = adapter
-        viewModel = this@NewsListFragment.viewModel
+        viewModel = newsListViewModel
         setLifecycleOwner { this@NewsListFragment.viewLifecycleOwner.lifecycle }
-    }.also {
-        viewModel.state.collectWhenStarted { state ->
+        newsListRefreshLayout.setOnRefreshListener { newsListViewModel.fetchNewsList() }
+    }.also { binding ->
+        newsListViewModel.state.collectWhenStarted { state ->
             if (state.isLoading) {
                 binding.newsListLoadingShimmer.startShimmer()
             } else {
                 binding.newsListLoadingShimmer.stopShimmer()
             }
+
+            binding.newsListRefreshLayout.isRefreshing = state.isLoading
 
             adapter.submitList(state.data)
 
@@ -38,14 +41,14 @@ class NewsListFragment : BaseFragment<FragmentNewsListBinding>() {
                 showToast(
                     state.error.message ?: getString(R.string.error_occurred_while_getting_news)
                 )
-                viewModel.errorHandlingDone()
+                newsListViewModel.errorHandlingDone()
             }
 
             state.navigateTo?.let { newsId ->
                 navController.navigate(
                     NewsListFragmentDirections.actionNewsListFragmentToNewsDetailFragment(newsId)
                 )
-                viewModel.navigationDone()
+                newsListViewModel.navigationDone()
             }
         }
     }

@@ -14,49 +14,57 @@
         <import type="android.view.View" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/news_list_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/news_list_loading_shimmer"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="@{viewModel.state.isLoading ? View.VISIBLE : View.GONE}"
-            tools:visibility="gone">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/news_list_loading_shimmer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:visibility="@{viewModel.state.isLoading ? View.VISIBLE : View.GONE}"
+                tools:visibility="gone">
 
-                <include layout="@layout/news_item_placeholder" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <include layout="@layout/news_item_placeholder" />
+                    <include layout="@layout/news_item_placeholder" />
 
-                <include layout="@layout/news_item_placeholder" />
+                    <include layout="@layout/news_item_placeholder" />
 
-                <include layout="@layout/news_item_placeholder" />
+                    <include layout="@layout/news_item_placeholder" />
 
-                <include layout="@layout/news_item_placeholder" />
+                    <include layout="@layout/news_item_placeholder" />
 
-                <include layout="@layout/news_item_placeholder" />
+                    <include layout="@layout/news_item_placeholder" />
 
-                <include layout="@layout/news_item_placeholder" />
+                    <include layout="@layout/news_item_placeholder" />
 
-            </LinearLayout>
+                    <include layout="@layout/news_item_placeholder" />
 
-        </com.facebook.shimmer.ShimmerFrameLayout>
+                </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/news_list_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="@{viewModel.state.isLoading ? View.GONE : View.VISIBLE}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/view_holder_news_item"
-            tools:visibility="visible" />
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/news_list_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="@{viewModel.state.isLoading ? View.GONE : View.VISIBLE}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/view_holder_news_item"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </layout>
