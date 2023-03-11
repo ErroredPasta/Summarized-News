@@ -2,12 +2,12 @@ package com.example.summarizednews.news.presentation.screen.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.summarizednews.databinding.ViewHolderNewsItemBinding
 
-class NewsListAdapter : ListAdapter<NewsUiState, NewsItemViewHolder>(diffUtil) {
+class NewsListAdapter : PagingDataAdapter<NewsUiState, NewsItemViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsItemViewHolder {
         return NewsItemViewHolder(
             ViewHolderNewsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -15,7 +15,7 @@ class NewsListAdapter : ListAdapter<NewsUiState, NewsItemViewHolder>(diffUtil) {
     }
 
     override fun onBindViewHolder(holder: NewsItemViewHolder, position: Int) {
-        holder.bind(currentList[position])
+        getItem(position)?.let { holder.bind(it) }
     }
 }
 

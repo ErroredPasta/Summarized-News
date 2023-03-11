@@ -29,7 +29,10 @@ class NewsListFragment : Fragment() {
         newsListRecyclerView.adapter = adapter
         viewModel = newsListViewModel
         setLifecycleOwner { this@NewsListFragment.viewLifecycleOwner.lifecycle }
-        newsListRefreshLayout.setOnRefreshListener { newsListViewModel.fetchNewsList() }
+        newsListRefreshLayout.setOnRefreshListener {
+            newsListViewModel.reloadNewsList()
+            adapter.refresh()
+        }
     }.also { binding ->
         recyclerView = binding.newsListRecyclerView
 
@@ -41,8 +44,6 @@ class NewsListFragment : Fragment() {
             }
 
             binding.newsListRefreshLayout.isRefreshing = state.isLoading
-
-            adapter.submitList(state.data)
 
             state.error?.let {
                 showToast(
@@ -57,6 +58,10 @@ class NewsListFragment : Fragment() {
                 )
                 newsListViewModel.navigationDone()
             }
+        }
+
+        newsListViewModel.state.collectLatestWhenStarted(lifecycleOwner = viewLifecycleOwner) { state ->
+            adapter.submitData(state.pagingData)
         }
     }.root
 

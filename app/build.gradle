@@ -104,6 +104,10 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
     implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
     // endregion Navigation ========================================================================
+    
+    // region  ======================================================================================
+    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
+    // endregion  ===================================================================================
 }
 
 kapt {

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-fun <T> Flow<T>.collectLatestWhenStarted(lifecycleOwner: LifecycleOwner, action: (T) -> Unit) =
+fun <T> Flow<T>.collectLatestWhenStarted(lifecycleOwner: LifecycleOwner, action: suspend (T) -> Unit) =
     with(lifecycleOwner) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
