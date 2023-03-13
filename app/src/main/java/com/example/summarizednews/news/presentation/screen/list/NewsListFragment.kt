@@ -60,8 +60,8 @@ class NewsListFragment : Fragment() {
             }
         }
 
-        newsListViewModel.state.collectLatestWhenStarted(lifecycleOwner = viewLifecycleOwner) { state ->
-            adapter.submitData(state.pagingData)
+        newsListViewModel.pagingDataFlow.collectLatestWhenStarted(lifecycleOwner = viewLifecycleOwner) { pagingData ->
+            adapter.submitData(pagingData)
         }
     }.root
 
