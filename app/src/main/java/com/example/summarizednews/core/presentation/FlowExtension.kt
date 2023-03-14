@@ -4,15 +4,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-fun <T> Flow<T>.collectLatestWhenStarted(lifecycleOwner: LifecycleOwner, action: suspend (T) -> Unit) =
-    with(lifecycleOwner) {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                this@collectLatestWhenStarted.collectLatest(action)
-            }
-        }
+fun LifecycleOwner.repeatOnLifecycleWhenStarted(block: suspend CoroutineScope.() -> Unit) =
+    lifecycleScope.launch {
+        repeatOnLifecycle(state = Lifecycle.State.STARTED, block = block)
     }

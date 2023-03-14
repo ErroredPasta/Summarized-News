@@ -9,10 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.summarizednews.R
-import com.example.summarizednews.core.presentation.collectLatestWhenStarted
+import com.example.summarizednews.core.presentation.repeatOnLifecycleWhenStarted
 import com.example.summarizednews.core.presentation.showToast
 import com.example.summarizednews.databinding.FragmentNewsListBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 
 @AndroidEntryPoint
 class NewsListFragment : Fragment() {
@@ -36,32 +37,38 @@ class NewsListFragment : Fragment() {
     }.also { binding ->
         recyclerView = binding.newsListRecyclerView
 
-        newsListViewModel.state.collectLatestWhenStarted(lifecycleOwner = viewLifecycleOwner) { state ->
-            if (state.isLoading) {
-                binding.newsListLoadingShimmer.startShimmer()
-            } else {
-                binding.newsListLoadingShimmer.stopShimmer()
-            }
+        viewLifecycleOwner.repeatOnLifecycleWhenStarted {
+            newsListViewModel.state.collectLatest { state ->
+                if (state.isLoading) {
+                    binding.newsListLoadingShimmer.startShimmer()
+                } else {
+                    binding.newsListLoadingShimmer.stopShimmer()
+                }
 
-            binding.newsListRefreshLayout.isRefreshing = state.isLoading
+                binding.newsListRefreshLayout.isRefreshing = state.isLoading
 
-            state.error?.let {
-                showToast(
-                    state.error.message ?: getString(R.string.error_occurred_while_getting_news)
-                )
-                newsListViewModel.errorHandlingDone()
-            }
+                state.error?.let {
+                    showToast(
+                        state.error.message ?: getString(R.string.error_occurred_while_getting_news)
+                    )
+                    newsListViewModel.errorHandlingDone()
+                }
 
-            state.navigateTo?.let { newsId ->
-                navController.navigate(
-                    NewsListFragmentDirections.actionNewsListFragmentToNewsDetailFragment(newsId)
-                )
-                newsListViewModel.navigationDone()
+                state.navigateTo?.let { newsId ->
+                    navController.navigate(
+                        NewsListFragmentDirections.actionNewsListFragmentToNewsDetailFragment(
+                            newsId = newsId
+                        )
+                    )
+                    newsListViewModel.navigationDone()
+                }
             }
         }
 
-        newsListViewModel.pagingDataFlow.collectLatestWhenStarted(lifecycleOwner = viewLifecycleOwner) { pagingData ->
-            adapter.submitData(pagingData)
+        viewLifecycleOwner.repeatOnLifecycleWhenStarted {
+            newsListViewModel.pagingDataFlow.collectLatest { pagingData ->
+                adapter.submitData(pagingData)
+            }
         }
     }.root
 
