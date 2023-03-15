@@ -17,7 +17,7 @@ import javax.inject.Inject
 class NewsDetailViewModel @Inject constructor(
     private val newsRepository: NewsRepository,
     private val summaryRepository: SummaryRepository,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
     private val newsId = requireNotNull(savedStateHandle.get<String>("news_id"))
 
@@ -26,9 +26,10 @@ class NewsDetailViewModel @Inject constructor(
     val state = actionChannel.receiveAsFlow()
         .onStart {
             emit(Action.FetchNewsDetail)
-        }.scan(NewsDetailState()) { state, action ->
-            handleSideEffect(action) { handledAction -> reduceState(state, handledAction) }
-        }.stateIn(
+        }.foldState(
+            initial = NewsDetailState(),
+            reduce = ::reduceState
+        ).stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000L),
             initialValue = NewsDetailState()
@@ -49,26 +50,39 @@ class NewsDetailViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleSideEffect(
-        action: Action,
-        next: suspend (Action) -> NewsDetailState
-    ): NewsDetailState {
-        return runCoroutineCatching {
-            when (action) {
-                Action.FetchNewsDetail -> {
-                    val newsDetail = newsRepository.getNewsDetailById(id = newsId)
-                    actionChannel.send(Action.FetchSummary(content = newsDetail.body))
-                    next(Action.ShowNewsDetail(newsDetail = newsDetail))
-                }
+    private fun Flow<Action>.foldState(
+        initial: NewsDetailState,
+        reduce: suspend (accumulator: NewsDetailState, value: Action) -> NewsDetailState,
+    ): Flow<NewsDetailState> = flow {
+        var accumulator: NewsDetailState = initial
 
-                is Action.FetchSummary -> {
-                    val summary = summaryRepository.summarize(content = action.content)
-                    next(Action.ShowSummary(summary = summary))
-                }
+        suspend fun applyAction(action: Action) {
+            accumulator = reduce(accumulator, action)
+            emit(accumulator)
+        }
 
-                else -> next(action)
-            }
-        }.getOrElse { cause -> next(Action.HandleError(error = cause)) }
+        emit(accumulator)
+        collect { action ->
+            runCoroutineCatching {
+                when (action) {
+                    Action.FetchNewsDetail -> {
+                        applyAction(action = action)
+
+                        val newsDetail = newsRepository.getNewsDetailById(id = newsId)
+                        actionChannel.send(Action.ShowNewsDetail(newsDetail = newsDetail))
+
+                        actionChannel.send(Action.FetchSummary(content = newsDetail.body))
+                    }
+
+                    is Action.FetchSummary -> {
+                        val summary = summaryRepository.summarize(content = action.content)
+                        applyAction(action = Action.ShowSummary(summary = summary))
+                    }
+
+                    else -> applyAction(action = action)
+                }
+            }.onFailure { cause -> applyAction(action = Action.HandleError(error = cause)) }
+        }
     }
 }
 
@@ -85,7 +99,7 @@ data class NewsDetailState(
     val isLoading: Boolean = false,
     val data: NewsDetail = emptyNewsDetail,
     val error: Throwable? = null,
-    val summary: String? = null
+    val summary: String? = null,
 )
 
 private val emptyNewsDetail = NewsDetail(
