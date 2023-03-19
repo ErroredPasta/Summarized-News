@@ -1,3 +1,5 @@
+import com.example.buildsrc.*
+
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
@@ -7,15 +9,15 @@ plugins {
 }
 
 android {
-    namespace 'com.example.summarizednews'
-    compileSdk 33
+    namespace ProjectConfigKt.NAMESPACE
+    compileSdk ProjectConfigKt.COMPILE_SDK
 
     defaultConfig {
-        applicationId "com.example.summarizednews"
-        minSdk 21
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        applicationId ProjectConfigKt.APPLICATION_ID
+        minSdk ProjectConfigKt.MIN_SDK
+        targetSdk ProjectConfigKt.TARGET_SDK
+        versionCode ProjectConfigKt.VERSION_CODE
+        versionName ProjectConfigKt.VERSION_NAME
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -51,63 +53,21 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    // region Retrofit2 ============================================================================
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
-    implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.2"
-    testImplementation "com.squareup.okhttp3:mockwebserver:4.9.3"
-    // endregion Retrofit2 =========================================================================
+    RetrofitKt.retrofitBundle.forEach { implementation it }
+    AndroidKtxKt.androidKtxBundle.forEach { implementation it }
+    NavigationKt.navigationBundle.forEach { implementation it }
 
-    // region Dagger Hilt ==========================================================================
-    implementation 'com.google.dagger:hilt-android:2.44.2'
-    kapt 'com.google.dagger:hilt-compiler:2.44.2'
-    // endregion Dagger2 ===========================================================================
+    implementation DaggerHiltKt.HILT_ANDROID
+    kapt DaggerHiltKt.HILT_COMPILER
 
-    // region Gson =================================================================================
-    implementation 'com.google.code.gson:gson:2.10.1'
-    // endregion Gson ==============================================================================
-
-    // region Coroutine ============================================================================
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
-    // endregion Coroutine =========================================================================
-
-    // region Activity, Fragment KTX ===============================================================
-    implementation "androidx.activity:activity-ktx:1.6.1"
-    implementation "androidx.fragment:fragment-ktx:1.5.5"
-    // endregion Activity, Fragment KTX ============================================================
-
-
-    // region Truth ================================================================================
-    testImplementation "com.google.truth:truth:1.1.3"
-    // endregion Truth =============================================================================
-
-    // region mockK ================================================================================
-    String mockkVersion = "1.13.3"
-    testImplementation "io.mockk:mockk:${mockkVersion}"
-    testImplementation "io.mockk:mockk-android:${mockkVersion}"
-    testImplementation "io.mockk:mockk-agent:${mockkVersion}"
-    // endregion mockK =============================================================================
-
-    // region Shimmer ==============================================================================
-    implementation 'com.facebook.shimmer:shimmer:0.5.0'
-    // endregion Shimmer ===========================================================================
-
-    // region Navigation ===========================================================================
-    String navigationVersion = "2.5.3"
-    implementation "androidx.navigation:navigation-fragment-ktx:${navigationVersion}"
-    implementation "androidx.navigation:navigation-ui-ktx:${navigationVersion}"
-    // endregion Navigation ========================================================================
-    
-    // region  ======================================================================================
-    implementation "androidx.paging:paging-runtime-ktx:3.1.1"
-    // endregion  ===================================================================================
+    implementation CoroutineKt.COROUTINE_ANDROID
+    implementation ShimmerKt.SHIMMER
+    implementation SwipeRefreshLayoutKt.SWIPE_REFRESH_LAYOUT
+    implementation PagingKt.PAGING
 }
 
 kapt {
