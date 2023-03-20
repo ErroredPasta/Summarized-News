@@ -57,9 +57,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    RetrofitKt.retrofitBundle.forEach { implementation it }
-    AndroidKtxKt.androidKtxBundle.forEach { implementation it }
-    NavigationKt.navigationBundle.forEach { implementation it }
+    implementation RetrofitKt.retrofitBundle
+    implementation AndroidKtxKt.androidKtxBundle
+    implementation NavigationKt.navigationBundle
 
     implementation DaggerHiltKt.HILT_ANDROID
     kapt DaggerHiltKt.HILT_COMPILER
