@@ -50,7 +50,7 @@ android {
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.9.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation AppCompatKt.APP_COMPAT
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
@@ -68,6 +68,10 @@ dependencies {
     implementation ShimmerKt.SHIMMER
     implementation SwipeRefreshLayoutKt.SWIPE_REFRESH_LAYOUT
     implementation PagingKt.PAGING
+
+    implementation project(":core:core_ui")
+    implementation project(":core:core_util")
+    implementation project(":core:core_di")
 }
 
 kapt {

@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Summarized News"
 include ':app'
+include ':core:core_ui'
+include ':core:core_util'
+include ':core:core_di'

@@ -3,7 +3,7 @@ package com.example.summarizednews.news.presentation.screen.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.summarizednews.core.util.runCoroutineCatching
+import com.example.core_util.runCoroutineCatching
 import com.example.summarizednews.news.domain.model.NewsDetail
 import com.example.summarizednews.news.domain.repository.NewsRepository
 import com.example.summarizednews.summary.domain.repository.SummaryRepository

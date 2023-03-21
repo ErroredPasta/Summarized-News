@@ -1,6 +1,7 @@
-package com.example.summarizednews.core.util
+package com.example.core_util
 
-import kotlinx.coroutines.CancellationException
+import kotlin.coroutines.cancellation.CancellationException
+
 
 inline fun <R> runCoroutineCatching(block: () -> R): Result<R> {
     return try {

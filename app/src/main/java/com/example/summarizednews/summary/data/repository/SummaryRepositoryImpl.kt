@@ -1,6 +1,6 @@
 package com.example.summarizednews.summary.data.repository
 
-import com.example.summarizednews.core.di.Dispatcher
+import com.example.core_util.Dispatcher
 import com.example.summarizednews.summary.data.api.SummaryApi
 import com.example.summarizednews.summary.data.dto.request.SummaryRequest
 import com.example.summarizednews.summary.domain.repository.SummaryRepository

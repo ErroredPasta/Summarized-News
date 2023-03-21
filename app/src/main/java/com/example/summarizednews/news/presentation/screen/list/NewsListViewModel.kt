@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.example.summarizednews.core.util.runCoroutineCatching
+import com.example.core_util.runCoroutineCatching
 import com.example.summarizednews.news.domain.repository.NewsRepository
 import com.example.summarizednews.news.presentation.mapper.toNewsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel

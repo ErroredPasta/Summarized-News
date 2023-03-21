@@ -3,7 +3,7 @@ package com.example.summarizednews.news.data.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.summarizednews.core.di.Dispatcher
+import com.example.core_util.Dispatcher
 import com.example.summarizednews.news.data.datasource.NewsPagingDataSource
 import com.example.summarizednews.news.domain.model.News
 import com.example.summarizednews.news.domain.model.NewsDetail

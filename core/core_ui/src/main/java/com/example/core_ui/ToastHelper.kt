@@ -1,4 +1,4 @@
-package com.example.summarizednews.core.presentation
+package com.example.core_ui
 
 import android.widget.Toast
 import androidx.fragment.app.Fragment

@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.core_ui.repeatOnLifecycleWhenStarted
+import com.example.core_ui.showToast
 import com.example.summarizednews.R
-import com.example.summarizednews.core.presentation.repeatOnLifecycleWhenStarted
-import com.example.summarizednews.core.presentation.showToast
 import com.example.summarizednews.databinding.FragmentNewsDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

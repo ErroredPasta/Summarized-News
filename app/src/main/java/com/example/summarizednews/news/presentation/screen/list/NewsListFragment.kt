@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.core_ui.repeatOnLifecycleWhenStarted
+import com.example.core_ui.showToast
 import com.example.summarizednews.R
-import com.example.summarizednews.core.presentation.repeatOnLifecycleWhenStarted
-import com.example.summarizednews.core.presentation.showToast
 import com.example.summarizednews.databinding.FragmentNewsListBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -29,7 +29,7 @@ class NewsListFragment : Fragment() {
     ): View = FragmentNewsListBinding.inflate(inflater, container, false).apply {
         newsListRecyclerView.adapter = adapter
         viewModel = newsListViewModel
-        setLifecycleOwner { this@NewsListFragment.viewLifecycleOwner.lifecycle }
+        lifecycleOwner = this@NewsListFragment.viewLifecycleOwner
         newsListRefreshLayout.setOnRefreshListener {
             newsListViewModel.reloadNewsList()
             adapter.refresh()

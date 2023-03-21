@@ -2,7 +2,7 @@ package com.example.summarizednews.news.data.datasource
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.summarizednews.core.util.runCoroutineCatching
+import com.example.core_util.runCoroutineCatching
 import com.example.summarizednews.news.data.api.NewsApi
 import com.example.summarizednews.news.data.mapper.toNewsDetail
 import com.example.summarizednews.news.data.mapper.toNewsList

@@ -1,4 +1,4 @@
-package com.example.summarizednews.core.presentation
+package com.example.core_ui
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
