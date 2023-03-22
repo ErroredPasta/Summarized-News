@@ -1,6 +1,5 @@
 package com.example.buildsrc
 
-const val NAMESPACE = "com.example.summarizednews"
 const val APPLICATION_ID = "com.example.summarizednews"
 const val COMPILE_SDK = 33
 const val MIN_SDK = 21

@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace ProjectConfigKt.NAMESPACE
+    namespace "com.example.summarizednews"
     compileSdk ProjectConfigKt.COMPILE_SDK
 
     defaultConfig {
