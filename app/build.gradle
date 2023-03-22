@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation AppCompatKt.APP_COMPAT
     implementation 'com.google.android.material:material:1.8.0'
@@ -52,16 +51,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation RetrofitKt.retrofitBundle
-    implementation AndroidKtxKt.androidKtxBundle
     implementation NavigationKt.navigationBundle
+    implementation CoroutineKt.COROUTINE_ANDROID
 
     implementation DaggerHiltKt.HILT_ANDROID
     kapt DaggerHiltKt.HILT_COMPILER
-
-    implementation CoroutineKt.COROUTINE_ANDROID
-    implementation ShimmerKt.SHIMMER
-    implementation LayoutKt.SWIPE_REFRESH_LAYOUT
-    implementation PagingKt.PAGING
 
     implementation project(":core:core_ui")
     implementation project(":core:core_util")
