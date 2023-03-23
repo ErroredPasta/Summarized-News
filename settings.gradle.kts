@@ -13,11 +13,11 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Summarized News"
-include ':app'
-include ':core:core_ui'
-include ':core:core_util'
-include ':news:news_ui'
-include ':news:news_domain'
-include ':summary:summary_domain'
-include ':news:news_data'
-include ':summary:summary_data'
+include(":app")
+include(":core:core_ui")
+include(":core:core_util")
+include(":news:news_ui")
+include(":news:news_domain")
+include(":summary:summary_domain")
+include(":news:news_data")
+include(":summary:summary_data")
