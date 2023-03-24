@@ -9,6 +9,7 @@ The Guardian API와 Open AI API를 이용한 줄거리를 보여주는 뉴스 �
 - single-module : local.properties에 THE_GUARDIAN_API_KEY, OPEN_AI_API_KEY를 추가
 
 [Changelog]
+
 2023.03.24 : 멀티 모듈 도입
 
 [API]
