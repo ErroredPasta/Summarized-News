@@ -3,17 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.example.news_ui.screen.list.NewsListViewModel" />
-
-        <import type="com.example.news_ui.screen.list.NewsListState" />
-
-        <import type="android.view.View" />
-    </data>
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/news_list_refresh_layout"
         android:layout_width="match_parent"
@@ -27,7 +16,6 @@
                 android:id="@+id/news_list_loading_shimmer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="@{viewModel.state.isLoading ? View.VISIBLE : View.GONE}"
                 tools:visibility="gone">
 
                 <LinearLayout
@@ -58,7 +46,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="@{viewModel.state.isLoading ? View.GONE : View.VISIBLE}"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/view_holder_news_item"
                 tools:visibility="visible" />

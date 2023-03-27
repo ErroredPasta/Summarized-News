@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import androidx.paging.map
 import androidx.recyclerview.widget.RecyclerView
 import com.example.core_ui.repeatOnLifecycleWhenStarted
 import com.example.core_ui.showToast
 import com.example.news_ui.R
 import com.example.news_ui.databinding.FragmentNewsListBinding
+import com.example.news_ui.mapper.toNewsUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -25,10 +29,9 @@ class NewsListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View = FragmentNewsListBinding.inflate(inflater, container, false).apply {
         newsListRecyclerView.adapter = adapter
-        viewModel = newsListViewModel
         lifecycleOwner = this@NewsListFragment.viewLifecycleOwner
         newsListRefreshLayout.setOnRefreshListener {
             newsListViewModel.reloadNewsList()
@@ -38,39 +41,50 @@ class NewsListFragment : Fragment() {
         recyclerView = binding.newsListRecyclerView
 
         viewLifecycleOwner.repeatOnLifecycleWhenStarted {
-            newsListViewModel.state.collectLatest { state ->
-                if (state.isLoading) {
-                    binding.newsListLoadingShimmer.startShimmer()
-                } else {
-                    binding.newsListLoadingShimmer.stopShimmer()
-                }
-
-                binding.newsListRefreshLayout.isRefreshing = state.isLoading
-
-                state.error?.let {
-                    showToast(
-                        state.error.message ?: getString(R.string.error_occurred_while_getting_news)
-                    )
-                    newsListViewModel.errorHandlingDone()
-                }
-
-                state.navigateTo?.let { newsId ->
-                    navController.navigate(
-                        NewsListFragmentDirections.actionNewsListFragmentToNewsDetailFragment(
-                            newsId = newsId
+            adapter.loadStateFlow.collectLatest { loadState ->
+                when (val currentState = loadState.refresh) {
+                    LoadState.Loading -> {
+                        binding.newsListLoadingShimmer.run {
+                            isVisible = true
+                            startShimmer()
+                        }
+                        binding.newsListRefreshLayout.isRefreshing = true
+                        binding.newsListRecyclerView.isVisible = false
+                    }
+                    is LoadState.NotLoading -> {
+                        binding.newsListLoadingShimmer.run {
+                            isVisible = false
+                            stopShimmer()
+                        }
+                        binding.newsListRefreshLayout.isRefreshing = false
+                        binding.newsListRecyclerView.isVisible = true
+                    }
+                    is LoadState.Error -> {
+                        showToast(
+                            message = currentState.error.message
+                                ?: getString(R.string.error_occurred_while_getting_news)
                         )
-                    )
-                    newsListViewModel.navigationDone()
+                    }
                 }
             }
         }
 
         viewLifecycleOwner.repeatOnLifecycleWhenStarted {
             newsListViewModel.pagingDataFlow.collectLatest { pagingData ->
-                adapter.submitData(pagingData)
+                val newsUiState = pagingData.map { news ->
+                    news.toNewsUiState(onClick = { navigateToDetailScreen(newsId = news.id) })
+                }
+
+                adapter.submitData(newsUiState)
             }
         }
     }.root
+
+    private fun navigateToDetailScreen(newsId: String) {
+        navController.navigate(NewsListFragmentDirections.actionNewsListFragmentToNewsDetailFragment(
+            newsId = newsId
+        ))
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
