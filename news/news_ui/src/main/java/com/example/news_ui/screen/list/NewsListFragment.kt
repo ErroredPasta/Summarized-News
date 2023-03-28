@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -42,29 +41,15 @@ class NewsListFragment : Fragment() {
 
         viewLifecycleOwner.repeatOnLifecycleWhenStarted {
             adapter.loadStateFlow.collectLatest { loadState ->
-                when (val currentState = loadState.refresh) {
-                    LoadState.Loading -> {
-                        binding.newsListLoadingShimmer.run {
-                            isVisible = true
-                            startShimmer()
-                        }
-                        binding.newsListRefreshLayout.isRefreshing = true
-                        binding.newsListRecyclerView.isVisible = false
-                    }
-                    is LoadState.NotLoading -> {
-                        binding.newsListLoadingShimmer.run {
-                            isVisible = false
-                            stopShimmer()
-                        }
-                        binding.newsListRefreshLayout.isRefreshing = false
-                        binding.newsListRecyclerView.isVisible = true
-                    }
-                    is LoadState.Error -> {
-                        showToast(
-                            message = currentState.error.message
-                                ?: getString(R.string.error_occurred_while_getting_news)
-                        )
-                    }
+                val currentState = loadState.refresh
+
+                binding.loadState = currentState
+
+                if (currentState is LoadState.Error) {
+                    showToast(
+                        message = currentState.error.message
+                            ?: getString(R.string.error_occurred_while_getting_news)
+                    )
                 }
             }
         }

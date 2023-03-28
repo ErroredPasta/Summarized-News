@@ -3,7 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="loadState"
+            type="androidx.paging.LoadState" />
+    </data>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        showLoading="@{loadState}"
         android:id="@+id/news_list_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -13,6 +20,7 @@
             android:layout_height="match_parent">
 
             <com.facebook.shimmer.ShimmerFrameLayout
+                showShimmerWhenLoading="@{loadState}"
                 android:id="@+id/news_list_loading_shimmer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -42,6 +50,7 @@
             </com.facebook.shimmer.ShimmerFrameLayout>
 
             <androidx.recyclerview.widget.RecyclerView
+                showWhenNotLoading="@{loadState}"
                 android:id="@+id/news_list_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
