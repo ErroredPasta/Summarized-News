@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
+import androidx.paging.map
 import androidx.recyclerview.widget.RecyclerView
 import com.example.summarizednews.R
 import com.example.summarizednews.core.presentation.repeatOnLifecycleWhenStarted
 import com.example.summarizednews.core.presentation.showToast
 import com.example.summarizednews.databinding.FragmentNewsListBinding
+import com.example.summarizednews.news.presentation.mapper.toNewsUiState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 
@@ -25,11 +28,10 @@ class NewsListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View = FragmentNewsListBinding.inflate(inflater, container, false).apply {
         newsListRecyclerView.adapter = adapter
-        viewModel = newsListViewModel
-        setLifecycleOwner { this@NewsListFragment.viewLifecycleOwner.lifecycle }
+        lifecycleOwner = this@NewsListFragment.viewLifecycleOwner
         newsListRefreshLayout.setOnRefreshListener {
             newsListViewModel.reloadNewsList()
             adapter.refresh()
@@ -38,39 +40,36 @@ class NewsListFragment : Fragment() {
         recyclerView = binding.newsListRecyclerView
 
         viewLifecycleOwner.repeatOnLifecycleWhenStarted {
-            newsListViewModel.state.collectLatest { state ->
-                if (state.isLoading) {
-                    binding.newsListLoadingShimmer.startShimmer()
-                } else {
-                    binding.newsListLoadingShimmer.stopShimmer()
-                }
+            adapter.loadStateFlow.collectLatest { loadState ->
+                val currentState = loadState.refresh
 
-                binding.newsListRefreshLayout.isRefreshing = state.isLoading
+                binding.loadState = currentState
 
-                state.error?.let {
+                if (currentState is LoadState.Error) {
                     showToast(
-                        state.error.message ?: getString(R.string.error_occurred_while_getting_news)
+                        message = currentState.error.message
+                            ?: getString(R.string.error_occurred_while_getting_news)
                     )
-                    newsListViewModel.errorHandlingDone()
-                }
-
-                state.navigateTo?.let { newsId ->
-                    navController.navigate(
-                        NewsListFragmentDirections.actionNewsListFragmentToNewsDetailFragment(
-                            newsId = newsId
-                        )
-                    )
-                    newsListViewModel.navigationDone()
                 }
             }
         }
 
         viewLifecycleOwner.repeatOnLifecycleWhenStarted {
             newsListViewModel.pagingDataFlow.collectLatest { pagingData ->
-                adapter.submitData(pagingData)
+                val newsUiState = pagingData.map { news ->
+                    news.toNewsUiState(onClick = { navigateToDetailScreen(newsId = news.id) })
+                }
+
+                adapter.submitData(newsUiState)
             }
         }
     }.root
+
+    private fun navigateToDetailScreen(newsId: String) {
+        navController.navigate(NewsListFragmentDirections.actionNewsListFragmentToNewsDetailFragment(
+            newsId = newsId
+        ))
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
