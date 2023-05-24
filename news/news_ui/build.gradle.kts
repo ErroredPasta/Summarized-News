@@ -37,6 +37,10 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = COMPOSE_VERSION
     }
 }
 
@@ -60,6 +64,8 @@ dependencies {
     implementation(project(":news:news_domain"))
 
     implementation(project(":summary:summary_domain"))
+
+    applyCompose()
 }
 
 kapt {

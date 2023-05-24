@@ -35,9 +35,13 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        compose = true
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = COMPOSE_VERSION
     }
 }
 
@@ -67,6 +71,8 @@ dependencies {
 
     implementation(project(":summary:summary_domain"))
     implementation(project(":summary:summary_data"))
+
+    applyCompose()
 }
 
 kapt {
