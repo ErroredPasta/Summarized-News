@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="news_section_placeholder_text">Media</string>
+    <string name="news_date_placeholder_text">2023–02–10T16:37:18Z</string>
+    <string name="error_occurred_while_getting_news">Error occurred while getting news</string>
+    <string name="summary">Summary</string>
+</resources>
