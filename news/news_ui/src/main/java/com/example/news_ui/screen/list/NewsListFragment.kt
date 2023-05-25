@@ -8,6 +8,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.core_ui.compose.SummarizedNewsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,10 +22,12 @@ class NewsListFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View = ComposeView(context = requireContext()).apply {
         setContent {
-            NewsListScreen(
-                viewModel = newsListViewModel,
-                onNewsItemClick = { id -> navigateToDetailScreen(newsId = id) }
-            )
+            SummarizedNewsTheme {
+                NewsListScreen(
+                    viewModel = newsListViewModel,
+                    onNewsItemClick = { id -> navigateToDetailScreen(newsId = id) }
+                )
+            }
         }
     }
 
