@@ -54,14 +54,14 @@ fun NewsListScreen(
     )
 
     Box(modifier = modifier.pullRefresh(pullRefreshState)) {
+        NewsListScreenContent(
+            newsList = newsList,
+            onNewsItemClick = onNewsItemClick,
+        )
         PullRefreshIndicator(
             refreshing = isLoading,
             state = pullRefreshState,
             modifier = Modifier.align(Alignment.TopCenter)
-        )
-        NewsListScreenContent(
-            newsList = newsList,
-            onNewsItemClick = onNewsItemClick,
         )
     }
 
