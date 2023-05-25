@@ -66,6 +66,7 @@ dependencies {
     implementation(project(":summary:summary_domain"))
 
     applyCompose()
+    implementation(PAGING_COMPOSE)
 }
 
 kapt {

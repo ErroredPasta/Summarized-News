@@ -13,7 +13,7 @@
         android:background="@color/shimmer_effect_color"
         android:ellipsize="end"
         android:maxLines="1"
-        android:textSize="18sp"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <TextView
