@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package com.example.news_ui.screen.list
 
 import android.view.LayoutInflater
@@ -16,8 +18,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
@@ -32,14 +36,34 @@ import com.example.news_ui.databinding.LoadingShimmerLayoutBinding
 import com.example.news_ui.mapper.toNewsUiState
 import kotlinx.coroutines.flow.flowOf
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NewsListScreen(
-    viewModel: NewsListViewModel,
-    onNewsItemClick: (id: String) -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: NewsListViewModel = viewModel(),
+    onNewsItemClick: (id: String) -> Unit,
 ) {
     val newsList = viewModel.pagingDataFlow.collectAsLazyPagingItems()
+
+    NewsListScreenContent(
+        newsList = newsList,
+        onNewsItemClick = onNewsItemClick,
+        onRefresh = {
+            newsList.refresh()
+            viewModel.reloadNewsList()
+        },
+        modifier = modifier
+    )
+}
+
+@Composable
+private fun NewsListScreenContent(
+    modifier: Modifier = Modifier,
+    newsList: LazyPagingItems<News>,
+    onNewsItemClick: (id: String) -> Unit,
+    onRefresh: () -> Unit,
+) {
+    val context = LocalContext.current
+
     val isLoading by remember {
         derivedStateOf {
             newsList.loadState.refresh == LoadState.Loading
@@ -47,69 +71,57 @@ fun NewsListScreen(
     }
     val pullRefreshState = rememberPullRefreshState(
         refreshing = isLoading,
-        onRefresh = {
-            newsList.refresh()
-            viewModel.reloadNewsList()
-        }
+        onRefresh = onRefresh
     )
 
     Box(modifier = modifier.pullRefresh(pullRefreshState)) {
-        NewsListScreenContent(
-            newsList = newsList,
-            onNewsItemClick = onNewsItemClick,
-        )
+        when (val currentState = newsList.loadState.refresh) {
+            LoadState.Loading -> {
+                AndroidView(
+                    factory = {
+                        LoadingShimmerLayoutBinding.inflate(LayoutInflater.from(it)).root
+                    },
+                    update = { loadingShimmer -> loadingShimmer.startShimmer() },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            is LoadState.NotLoading -> LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                items(
+                    count = newsList.itemCount,
+                    key = newsList.itemKey { it.id },
+                ) { index ->
+                    val item =
+                        newsList[index]?.toNewsUiState(onClick = onNewsItemClick) ?: return@items
+                    NewsItem(uiState = item)
+                }
+            }
+
+            is LoadState.Error -> context.showToast(
+                message = currentState.error.message
+                    ?: stringResource(id = R.string.error_occurred_while_getting_news)
+            )
+
+            else -> Unit
+        }
+
         PullRefreshIndicator(
             refreshing = isLoading,
             state = pullRefreshState,
             modifier = Modifier.align(Alignment.TopCenter)
         )
     }
-
-}
-
-@Composable
-private fun NewsListScreenContent(
-    newsList: LazyPagingItems<News>,
-    onNewsItemClick: (id: String) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val context = LocalContext.current
-
-    when (newsList.loadState.refresh) {
-        LoadState.Loading -> {
-            AndroidView(factory = {
-                LoadingShimmerLayoutBinding.inflate(LayoutInflater.from(it)).root.apply {
-                    startShimmer()
-                }
-            },
-                modifier = modifier.fillMaxWidth()
-            )
-        }
-
-        is LoadState.NotLoading -> LazyColumn(modifier = modifier.fillMaxWidth()) {
-            items(
-                count = newsList.itemCount,
-                key = newsList.itemKey { it.id },
-            ) { index ->
-                val item = newsList[index]?.toNewsUiState(onClick = onNewsItemClick) ?: return@items
-                NewsItem(uiState = item)
-            }
-        }
-
-        is LoadState.Error -> context.showToast(stringRes = R.string.error_occurred_while_getting_news)
-
-        else -> Unit
-    }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun NewsListScreenPreview() {
+private fun NewsListScreenSuccessPreview() {
     SummarizedNewsTheme {
         NewsListScreenContent(
+            modifier = Modifier.fillMaxSize(),
             newsList = previewNewsList.collectAsLazyPagingItems(),
             onNewsItemClick = {},
-            modifier = Modifier.fillMaxSize(),
+            onRefresh = {}
         )
     }
 }

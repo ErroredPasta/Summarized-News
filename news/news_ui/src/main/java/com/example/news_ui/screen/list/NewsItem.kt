@@ -54,6 +54,14 @@ fun NewsItem(
     }
 }
 
+data class NewsUiState(
+    val id: String,
+    val title: String,
+    val writtenAt: String,
+    val section: String,
+    val onClick: (id: String) -> Unit
+)
+
 @Preview(showBackground = true)
 @Composable
 private fun NewsItemPreview() {

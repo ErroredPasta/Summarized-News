@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.core_ui.compose.SummarizedNewsTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class NewsListFragment : Fragment() {
-    private val newsListViewModel by viewModels<NewsListViewModel>()
     private val navController by lazy { findNavController() }
 
     override fun onCreateView(
@@ -24,8 +22,7 @@ class NewsListFragment : Fragment() {
         setContent {
             SummarizedNewsTheme {
                 NewsListScreen(
-                    viewModel = newsListViewModel,
-                    onNewsItemClick = { id -> navigateToDetailScreen(newsId = id) }
+                    onNewsItemClick = { id -> navigateToDetailScreen(newsId = id) },
                 )
             }
         }
