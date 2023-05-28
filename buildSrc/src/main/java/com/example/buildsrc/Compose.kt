@@ -15,8 +15,9 @@ const val COMPOSE_PREVIEW_DEBUG = "androidx.compose.ui:ui-tooling"
 private const val COMPOSE_ACTIVITY_VERSION = "1.6.1"
 const val COMPOSE_ACTIVITY = "androidx.activity:activity-compose:$COMPOSE_ACTIVITY_VERSION"
 
-private const val COMPOSE_VIEW_MODEL_VERSION = "2.5.1"
-const val COMPOSE_VIEW_MODEL = "androidx.lifecycle:lifecycle-viewmodel-compose:$COMPOSE_VIEW_MODEL_VERSION"
+private const val LIFECYCLE_COMPOSE_VERSION = "2.5.1"
+const val COMPOSE_VIEW_MODEL = "androidx.lifecycle:lifecycle-viewmodel-compose:$LIFECYCLE_COMPOSE_VERSION"
+const val LIFECYCLE_COMPOSE = "androidx.lifecycle:lifecycle-runtime-compose:$LIFECYCLE_COMPOSE_VERSION"
 
 fun DependencyHandlerScope.applyCompose() {
     val composeBom = platform(COMPOSE_BOM)
@@ -30,4 +31,5 @@ fun DependencyHandlerScope.applyCompose() {
 
     "implementation"(COMPOSE_ACTIVITY)
     "implementation"(COMPOSE_VIEW_MODEL)
+    "implementation"(LIFECYCLE_COMPOSE)
 }
