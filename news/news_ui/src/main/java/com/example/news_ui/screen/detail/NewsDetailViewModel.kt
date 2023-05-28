@@ -10,7 +10,6 @@ import com.example.summary_domain.SummaryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,10 +33,6 @@ class NewsDetailViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(stopTimeoutMillis = 5_000L),
             initialValue = NewsDetailState()
         )
-
-    fun errorHandlingDone() {
-        viewModelScope.launch { actionChannel.send(Action.ErrorHandlingDone) }
-    }
 
     private fun reduceState(state: NewsDetailState, action: Action): NewsDetailState {
         return when (action) {

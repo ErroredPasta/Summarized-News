@@ -4,4 +4,5 @@
     <string name="news_date_placeholder_text">2023–02–10T16:37:18Z</string>
     <string name="error_occurred_while_getting_news">Error occurred while getting news</string>
     <string name="summary">Summary</string>
+    <string name="error_occurred">Error Occurred</string>
 </resources>
