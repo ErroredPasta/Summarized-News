@@ -1,13 +1,10 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
 package com.example.news_ui.screen.list
 
 import android.view.LayoutInflater
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -69,12 +66,12 @@ private fun NewsListScreenContent(
             newsList.loadState.refresh == LoadState.Loading
         }
     }
-    val pullRefreshState = rememberPullRefreshState(
-        refreshing = isLoading,
-        onRefresh = onRefresh
-    )
 
-    Box(modifier = modifier.pullRefresh(pullRefreshState)) {
+    PullRefreshLayout(
+        isLoading = isLoading,
+        onRefresh = onRefresh,
+        modifier = modifier
+    ) {
         when (val currentState = newsList.loadState.refresh) {
             LoadState.Loading -> {
                 AndroidView(
@@ -97,14 +94,36 @@ private fun NewsListScreenContent(
                 }
             }
 
-            is LoadState.Error -> context.showToast(
-                message = currentState.error.message
-                    ?: stringResource(id = R.string.error_occurred_while_getting_news)
-            )
+            is LoadState.Error -> {
+                Spacer(modifier = Modifier.fillMaxSize())
+                context.showToast(
+                    message = currentState.error.message
+                        ?: stringResource(id = R.string.error_occurred_while_getting_news)
+                )
+            }
 
             else -> Unit
         }
+    }
+}
 
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun PullRefreshLayout(
+    modifier: Modifier = Modifier,
+    isLoading: Boolean,
+    onRefresh: () -> Unit,
+    content: @Composable BoxScope.() -> Unit,
+) {
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = isLoading,
+        onRefresh = onRefresh
+    )
+
+    Box(
+        modifier = modifier.pullRefresh(pullRefreshState),
+    ) {
+        content()
         PullRefreshIndicator(
             refreshing = isLoading,
             state = pullRefreshState,
@@ -115,23 +134,47 @@ private fun NewsListScreenContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun NewsListScreenSuccessPreview() {
+private fun NewsListScreenContentLoadingPreview() {
     SummarizedNewsTheme {
-        NewsListScreenContent(
-            modifier = Modifier.fillMaxSize(),
-            newsList = previewNewsList.collectAsLazyPagingItems(),
-            onNewsItemClick = {},
-            onRefresh = {}
-        )
+        Surface(modifier = Modifier.fillMaxSize()) {
+            NewsListScreenContent(
+                newsList = previewLoadingNewsList.collectAsLazyPagingItems(),
+                onNewsItemClick = {},
+                onRefresh = {}
+            )
+        }
     }
 }
 
-private val previewNewsList = (1..10).map {
+private val previewLoadingNewsList = flowOf(PagingData.from(
+    data = emptyList<News>(),
+    sourceLoadStates = LoadStates(
+        refresh = LoadState.Loading,
+        prepend = LoadState.Loading,
+        append = LoadState.Loading,
+    )
+))
+
+@Preview(showBackground = true)
+@Composable
+private fun NewsListScreenSuccessPreview() {
+    SummarizedNewsTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            NewsListScreenContent(
+                newsList = previewSuccessNewsList.collectAsLazyPagingItems(),
+                onNewsItemClick = {},
+                onRefresh = {},
+            )
+        }
+    }
+}
+
+private val previewSuccessNewsList = (1..20).map {
     News(
         id = it.toString(),
-        title = it.toString(),
+        title = "Title $it",
         writtenAt = it.toString(),
-        section = it.toString(),
+        section = "Media",
     )
 }.let {
     flowOf(PagingData.from(
@@ -143,3 +186,26 @@ private val previewNewsList = (1..10).map {
         )
     ))
 }
+
+@Preview(showBackground = true)
+@Composable
+private fun NewsListScreenContentErrorPreview() {
+    SummarizedNewsTheme {
+        Surface {
+            NewsListScreenContent(
+                newsList = previewErrorNewsList.collectAsLazyPagingItems(),
+                onNewsItemClick = {},
+                onRefresh = {}
+            )
+        }
+    }
+}
+
+private val previewErrorNewsList = flowOf(PagingData.from(
+    data = emptyList<News>(),
+    sourceLoadStates = LoadStates(
+        refresh = LoadState.Error(error = Exception("Error occurred")),
+        prepend = LoadState.Error(error = Exception("Error occurred")),
+        append = LoadState.Error(error = Exception("Error occurred")),
+    )
+))
