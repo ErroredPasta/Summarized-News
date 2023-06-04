@@ -18,7 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.flowOf
 @Composable
 fun NewsListScreen(
     modifier: Modifier = Modifier,
-    viewModel: NewsListViewModel = viewModel(),
+    viewModel: NewsListViewModel = hiltViewModel(),
     onNewsItemClick: (id: String) -> Unit,
 ) {
     val newsList = viewModel.pagingDataFlow.collectAsLazyPagingItems()

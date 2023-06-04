@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.text.HtmlCompat
 import androidx.core.text.HtmlCompat.FROM_HTML_MODE_COMPACT
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.core_ui.compose.SummarizedNewsTheme
 import com.example.news_domain.model.NewsDetail
 import com.example.news_ui.R
@@ -31,7 +31,7 @@ import com.example.news_ui.R
 @Composable
 fun NewsDetailScreen(
     modifier: Modifier = Modifier,
-    viewModel: NewsDetailViewModel = viewModel(),
+    viewModel: NewsDetailViewModel = hiltViewModel(),
 ) {
     val newsDetailState by viewModel.state.collectAsStateWithLifecycle()
 
