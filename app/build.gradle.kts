@@ -60,6 +60,7 @@ dependencies {
     implementation(COROUTINE_ANDROID)
 
     implementation(HILT_ANDROID)
+    implementation(HILT_NAVIGATION_COMPOSE)
     kapt(HILT_COMPILER)
 
     implementation(project(":core:core_ui"))

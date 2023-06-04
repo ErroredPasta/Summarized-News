@@ -50,6 +50,7 @@ dependencies {
     implementation(SWIPE_REFRESH_LAYOUT)
 
     implementation(HILT_ANDROID)
+    implementation(HILT_NAVIGATION_COMPOSE)
     kapt(HILT_COMPILER)
 
     implementation(FRAGMENT_KTX)
