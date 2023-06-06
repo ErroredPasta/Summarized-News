@@ -3,7 +3,9 @@ package com.example.summarizednews
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -40,7 +42,7 @@ class MainActivity : ComponentActivity() {
                             Destination.NewsDetailDestination.route,
                             arguments = listOf(navArgument("news_id") { type = NavType.StringType })
                         ) {
-                            NewsDetailScreen()
+                            NewsDetailScreen(modifier = Modifier.fillMaxSize())
                         }
                     }
                 }
