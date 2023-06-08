@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -95,7 +97,16 @@ private fun NewsListScreenContent(
             }
 
             is LoadState.Error -> {
-                Spacer(modifier = Modifier.fillMaxSize())
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.matchParentSize()
+                ) {
+                    Text(text = stringResource(R.string.please_try_again_later))
+                    TextButton(onClick = onRefresh) {
+                        Text(text = stringResource(R.string.retry))
+                    }
+                }
                 context.showToast(
                     message = currentState.error.message
                         ?: stringResource(id = R.string.error_occurred_while_getting_news)

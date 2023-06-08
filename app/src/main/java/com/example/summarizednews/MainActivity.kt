@@ -34,7 +34,8 @@ class MainActivity : ComponentActivity() {
                             NewsListScreen(
                                 onNewsItemClick = { id ->
                                     navController.navigate(Destination.NewsDetailDestination(newsId = id))
-                                }
+                                },
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
 
