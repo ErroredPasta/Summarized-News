@@ -12,13 +12,16 @@ The Guardian API와 Open AI API를 이용한 줄거리를 보여주는 뉴스 �
 
 2023.03.24 : 멀티 모듈 도입
 
+2023.06.08 : Compose migration 완료
+
 [API]
 - The Guardian : https://open-platform.theguardian.com/
 - Open AI : https://platform.openai.com/
 
 [What I used]
 - Architecture : MVI
-- AAC : ViewModel, DataBinding, Navigation, Paging
+- Jetpack Compose
+- AAC : ViewModel, Navigation, Paging
 - Async : Coroutine + Flow
 - DI : Dagger Hilt
 - Network : Retrofit2 + Gson
