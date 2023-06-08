@@ -11,15 +11,15 @@ buildscript {
         val navVersion = "2.5.3"
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion")
 
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20")
     }
 }
 
 plugins {
     id("com.android.application") version("7.3.1") apply(false)
     id("com.android.library") version("7.3.1") apply(false)
-    id("org.jetbrains.kotlin.android") version("1.7.20") apply(false)
-    id("org.jetbrains.kotlin.jvm") version("1.8.10") apply(false)
+    id("org.jetbrains.kotlin.android") version("1.8.20") apply(false)
+    id("org.jetbrains.kotlin.jvm") version("1.8.20") apply(false)
 }
 
 tasks.register("clean", Delete::class) {

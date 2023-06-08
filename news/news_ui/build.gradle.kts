@@ -37,6 +37,10 @@ android {
     buildFeatures {
         dataBinding = true
         viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = COMPOSE_VERSION
     }
 }
 
@@ -46,6 +50,7 @@ dependencies {
     implementation(SWIPE_REFRESH_LAYOUT)
 
     implementation(HILT_ANDROID)
+    implementation(HILT_NAVIGATION_COMPOSE)
     kapt(HILT_COMPILER)
 
     implementation(FRAGMENT_KTX)
@@ -60,6 +65,9 @@ dependencies {
     implementation(project(":news:news_domain"))
 
     implementation(project(":summary:summary_domain"))
+
+    applyCompose()
+    implementation(PAGING_COMPOSE)
 }
 
 kapt {

@@ -4,7 +4,7 @@ import com.example.news_domain.model.News
 import com.example.news_ui.screen.list.NewsUiState
 
 internal fun News.toNewsUiState(
-    onClick: () -> Unit
+    onClick: (id: String) -> Unit
 ) = NewsUiState(
     id = id,
     title = title,
